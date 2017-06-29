@@ -3,6 +3,7 @@ package com.nebustack.file;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,6 +13,7 @@ import com.nebustack.model.Vector;
 import com.nebustack.model.task.Task;
 
 public final class Frame {
+	private final static DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
 	private final double[][][] data;
 	private final int width, height, channels;
 	private final String name;
@@ -102,7 +104,7 @@ public final class Frame {
 	}
 
 	public String getDateTimeString() {
-		return time == null ? "n/a" : time.toString();
+		return time == null ? "n/a" : time.format(DATE_FORMATTER);
 	}
 
 	public int getChannels() {
@@ -110,7 +112,7 @@ public final class Frame {
 	}
 
 	public String getColorFormat() {
-		return channels == 1 ? "Mono" : "RGB";
+		return channels == 1 ? "Monochrome" : "RGB";
 	}
 
 	public synchronized String getNumberOfStars() {

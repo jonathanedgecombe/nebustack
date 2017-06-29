@@ -88,17 +88,17 @@ public class TableModel extends AbstractTableModel {
 		case 6:
 			return frame.getColorFormat();
 		case 7:
-			return frame.getGain() == 0 ? "" : Integer.toString(frame.getGain());
+			return frame.getGain() == 0 ? "-" : Integer.toString(frame.getGain());
 		case 8:
-			return Double.isNaN(frame.getTemperature()) ? "" : (DF.format(frame.getTemperature()) + "\u00B0c");
+			return Double.isNaN(frame.getTemperature()) ? "-" : (DF.format(frame.getTemperature()) + "\u00B0c");
 		case 9:
 			return frame.getResolution();
 		case 10:
-			return Double.isNaN(frame.getExposure()) ? "" : (DF.format(frame.getExposure()) + "s");
+			return Double.isNaN(frame.getExposure()) ? "-" : (DF.format(frame.getExposure()) + "s");
 		case 11:
-			return frame.getStars() == null ? "" : Integer.toString(frame.getStars().size());
+			return frame.getStars() == null ? "-" : Integer.toString(frame.getStars().size());
 		case 12:
-			return frame.getStars() == null ? "" : DF.format(frame.getFWHM());
+			return frame.getStars() == null ? "-" : DF.format(frame.getFWHM());
 		}
 
 		throw new RuntimeException("Invalid column");
