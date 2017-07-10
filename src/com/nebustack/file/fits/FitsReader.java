@@ -59,7 +59,12 @@ public final class FitsReader extends Reader {
 		if (!(channels == 1 || channels == 3)) throw new IOException("Channels != 1/3");
 
 		String dtString = getDate(headers);
-		LocalDateTime lcd = DateTimeFormatter.ISO_DATE_TIME.parse(dtString, LocalDateTime::from);
+		LocalDateTime lcd = null;
+		try {
+			DateTimeFormatter.ISO_DATE_TIME.parse(dtString, LocalDateTime::from);
+		} catch (Exception ex) {
+			// TODO
+		}
 		System.out.println(lcd);
 
 		double[][][] data = new double[channels][width][height];
