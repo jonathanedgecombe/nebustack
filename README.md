@@ -5,10 +5,13 @@ Nebustack is an open source cross-platform application for astrophotographers fo
 ## Samples
 
 100% crop of single 5 minute Ha frame
+
 ![sample-single](https://github.com/jonathanedgecombe/nebustack/raw/master/sample-single.png)
 
+
 100% crop of stack of 13x Ha frames, 17x OIII frames & 26x SII frames (all 5 minutes), calibrated with 5 dark frames
-![sample-single](https://github.com/jonathanedgecombe/nebustack/raw/master/sample-single.png)
+
+![sample-stacked](https://github.com/jonathanedgecombe/nebustack/raw/master/sample-stacked.png)
 
 ## Screenshots
 
