@@ -1,0 +1,11 @@
+bin
+.*
+*.sw*
+*~
+*.fits
+*.fit
+*.fts
+*.png
+!screenshot*.png
+!sample*.png
+!.gitignore
