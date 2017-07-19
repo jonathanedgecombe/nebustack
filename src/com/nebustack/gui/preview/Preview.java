@@ -118,19 +118,20 @@ public final class Preview extends JPanel {
 
 		this.scale = Math.pow(((double) (scale - 1) / 8) + 1, 1.25);
 		this.offset = Math.tanh((50.0 - (double) offset) / 50) / (this.scale * 16);
-		System.out.println(this.offset);
 
 		double sign = 1;
 		if (this.offset < 0) sign = -1;
-		this.offset = Math.pow(Math.abs(this.offset), 0.5) * sign;
-		System.out.println(this.offset);
-		System.out.println();
+		this.offset = 2 * Math.pow(Math.abs(this.offset), 0.5) * sign;
 
 		update();
 	}
 
 	public synchronized void update() {
-		if (frame == null) return;
+		if (frame == null) {
+			renderedFrame = null;
+			repaint();
+			return;
+		}
 
 		for (Runnable task : EXECUTOR.getQueue()) {
 			((RenderTask) task).cancel();

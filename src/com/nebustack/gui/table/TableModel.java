@@ -4,9 +4,12 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JRadioButtonMenuItem;
+import javax.swing.SwingUtilities;
 import javax.swing.table.AbstractTableModel;
 
 import com.nebustack.file.Frame;
+import com.nebustack.gui.preview.Preview;
 
 @SuppressWarnings("serial")
 public class TableModel extends AbstractTableModel {
@@ -14,8 +17,38 @@ public class TableModel extends AbstractTableModel {
 
 	private final static DecimalFormat DF = new DecimalFormat("#.##");
 
+	private final Preview preview;
+	private final JRadioButtonMenuItem stackedImageMenuItem;
+
 	private final List<Frame> frames = new ArrayList<>();
+	private Frame selectedFrame = null;
+	private Frame stackedFrame = null;
 	private Frame reference = null;
+
+	public TableModel(Preview preview, JRadioButtonMenuItem stackedMenuItem, JRadioButtonMenuItem framesMenuItem) {
+		this.preview = preview;
+		this.stackedImageMenuItem = stackedMenuItem;
+	}
+
+	public synchronized void setStackedFrame(Frame frame) {
+		this.stackedFrame = frame;
+		preview.setFrame(stackedFrame);
+		SwingUtilities.invokeLater(() -> stackedImageMenuItem.setSelected(true));
+	}
+
+	public synchronized Frame getStackedFrame() {
+		return stackedFrame;
+	}
+
+	public synchronized void setSelectedFrame(Frame frame) {
+		this.selectedFrame = frame;
+		preview.setFrame(stackedFrame);
+		SwingUtilities.invokeLater(() -> stackedImageMenuItem.setSelected(true));
+	}
+
+	public synchronized Frame getSelectedFrame() {
+		return selectedFrame;
+	}
 
 	public synchronized List<Frame> getFrames() {
 		List<Frame> clone = new ArrayList<>();
@@ -140,6 +173,11 @@ public class TableModel extends AbstractTableModel {
 
 		for (Frame f : toRemove) {
 			frames.remove(f);
+
+			if (f.equals(selectedFrame)) {
+				selectedFrame = null;
+				preview.setFrame(null);
+			}
 		}
 
 		fireTableDataChanged();

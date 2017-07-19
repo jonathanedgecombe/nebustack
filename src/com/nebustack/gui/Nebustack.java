@@ -83,15 +83,18 @@ public class Nebustack {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setTitle("Nebustack");
 
-		TableModel model = new TableModel();
+		Histogram histogram = new Histogram();
+		histogram.setSize(200, 64);
+		Preview preview = new Preview(histogram);
+
+		JRadioButtonMenuItem stackedMenuItem = new JRadioButtonMenuItem("Stacked image");
+		JRadioButtonMenuItem framesMenuItem = new JRadioButtonMenuItem("Frames");
+
+		TableModel model = new TableModel(preview, stackedMenuItem, framesMenuItem);
 		JTable table = new JTable(model);
 
 		ProgressDialog progressDialog = new ProgressDialog(frame);
 		Scheduler scheduler = new Scheduler(frame, progressDialog);
-
-		Histogram histogram = new Histogram();
-		histogram.setSize(200, 64);
-		Preview preview = new Preview(histogram);
 
 		RegisterDialog registerDialog = new RegisterDialog(frame, scheduler, table, model, preview);
 		StackDialog stackDialog = new StackDialog(frame, scheduler, model);
@@ -121,7 +124,7 @@ public class Nebustack {
 		tableScroll.setBackground(Color.WHITE);
 		tableScroll.getViewport().setBackground(Color.WHITE);
 
-		table.getSelectionModel().addListSelectionListener(new SelectionListener(model, preview, table));
+		table.getSelectionModel().addListSelectionListener(new SelectionListener(model, table));
 
 		table.addMouseListener(new MouseAdapter() {
 		    @Override
@@ -383,16 +386,27 @@ public class Nebustack {
 		JMenu mnView = new JMenu("View");
 		menuBar.add(mnView);
 
-		JRadioButtonMenuItem rdbtnmntmFrames = new JRadioButtonMenuItem("Frames");
-		rdbtnmntmFrames.setSelected(true);
-		mnView.add(rdbtnmntmFrames);
+		framesMenuItem.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				preview.setFrame(model.getSelectedFrame());
+			}
+		});
+		framesMenuItem.setSelected(true);
+		mnView.add(framesMenuItem);
 
-		JRadioButtonMenuItem rdbtnmntmStackedImage = new JRadioButtonMenuItem("Stacked image");
-		mnView.add(rdbtnmntmStackedImage);
+		stackedMenuItem.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				preview.setFrame(model.getStackedFrame());
+			}
+		});
+		//rdbtnmntmStackedImage.setSelected(true);
+		mnView.add(stackedMenuItem);
 
 		ButtonGroup group = new ButtonGroup();
-		group.add(rdbtnmntmFrames);
-		group.add(rdbtnmntmStackedImage);
+		group.add(framesMenuItem);
+		group.add(stackedMenuItem);
 
 		JMenu mnOptions = new JMenu("Options");
 		menuBar.add(mnOptions);

@@ -13,6 +13,7 @@ import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import com.nebustack.file.Frame;
 import com.nebustack.file.fits.FitsWriter;
+import com.nebustack.gui.preview.Preview;
 import com.nebustack.gui.table.TableModel;
 import com.nebustack.model.stack.CalibrationStacker;
 import com.nebustack.model.stack.Stacker;
@@ -110,7 +111,9 @@ public final class StackTask extends Task {
 		setProgress(0, "Stacking light frames", EMPTY_MESSAGE);
 		Frame stacked = stacker.stack(lights, reference, this, masterDark, masterBias, masterFlat);
 
-		try (OutputStream out = new BufferedOutputStream(Files.newOutputStream(Paths.get("out.fits")))) {
+		model.setStackedFrame(stacked);
+
+		/*try (OutputStream out = new BufferedOutputStream(Files.newOutputStream(Paths.get("out.fits")))) {
 			new FitsWriter(out).write(stacked);
 		} catch (IOException e) {
 			throw new RuntimeException(e);
@@ -122,6 +125,6 @@ public final class StackTask extends Task {
 			ImageIO.write(img, "PNG", out);
 		} catch (IOException e) {
 			throw new RuntimeException(e);
-		}
+		}*/
 	}
 }
